@@ -47,40 +47,22 @@ When multiple parameter sets are defined, you can use the `DefaultParameterSetNa
 
 To create a parameter set, you must specify the `ParameterSetName` keyword when you declare the Parameter attribute for every parameter in the parameter set. For parameters that belong to multiple parameter sets, add a Parameter attribute for each parameter set. This enables you to define the parameter differently for each parameter set. For example, you can define a parameter as mandatory in one set and optional in another. However, each parameter set must contain one unique parameter.
 
-In the following example, the `UserName` parameter is the unique parameter of the Test01 parameter set, and the `ComputerName` parameter is the unique parameter of the Test02 parameter set. The `SharedParam` parameter belongs to both sets and is mandatory for the Test01 parameter set but optional for the Test02 parameter set.
+In the following example, the `UserName` parameter is the unique parameter of the Test01 parameter set, and the `ComputerName` parameter is the unique parameter of the Test02 parameter set. The `EnvironmentName` parameter is the unique parameter of the Test03 parameter set. The `SharedParam` parameter belongs to both Test01 and Test02 sets and is mandatory for the Test01 parameter set but optional for the Test02 parameter set.  It cannot be passed at all for the Test03 set.  Finally the `DefaultSetParam` is part of the default parameter set so it can be used by any one of the existing parameter sets.
 
 ```csharp
-[Parameter(Position = 0, Mandatory = true,
-           ParameterSetName = "Test01")]
-public string UserName
-{
-  get { return userName; }
-  set { userName = value; }
-}
-private string userName;
+[Parameter(Position = 0, Mandatory = true, ParameterSetName = "Test01")]
+public string UserName { get; set; }
 
-[Parameter(Position = 0, Mandatory = true,
-           ParameterSetName = "Test02")]
-public string ComputerName
-{
-  get { return computerName; }
-  set { computerName = value; }
-}
-private string computerName;
+[Parameter(Position = 0, Mandatory = true, ParameterSetName = "Test02")]
+public string ComputerName { get; set; }
 
-[Parameter(Mandatory= true, ParameterSetName = "Test01")]
+[Parameter(Position = 0, Mandatory = true, ParameterSetName = "Test03")]
+public string EnvironmentName { get; set; }
+
+[Parameter(Mandatory = true, ParameterSetName = "Test01")]
 [Parameter(ParameterSetName = "Test02")]
-public string SharedParam
-{
-    get { return sharedParam; }
-    set { sharedParam = value; }
-}
-private string sharedParam;    [Parameter(Position = 0, Mandatory = true,
-           ParameterSetName = "Test01")]
-public string UserName
-{
-  get { return userName; }
-  set { userName = value; }
-}
-private string userName;
+public string SharedParam { get; set; }
+
+[Parameter()]
+public string DefaultSetParam { get; set; }
 ```
